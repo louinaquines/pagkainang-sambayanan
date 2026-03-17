@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Laravel\Socialite\Facades\Socialite;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Str;
 
 class GoogleAuthController extends Controller
 {
@@ -23,7 +24,7 @@ class GoogleAuthController extends Controller
         ], [
             'name' => $googleUser->name,
             'google_id' => $googleUser->id,
-            'password' => bcrypt(str_random(16)), // Random password since they use Google
+            'password' => bcrypt(Str::random(16)), // Random password since they use Google
             'role' => 'donor', // Default role for Pagkainang Sambayanan
         ]);
 
