@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\GoogleAuthController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -113,6 +114,8 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/charities/{id}/approve', [AdminController::class, 'approveCharity'])->name('admin.charities.approve');
         Route::post('/admin/charities/{id}/reject', [AdminController::class, 'rejectCharity'])->name('admin.charities.reject');
     });
+    Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle']);
+    Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
 
 });
 
