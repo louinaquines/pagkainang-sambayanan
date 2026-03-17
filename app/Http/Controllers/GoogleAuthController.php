@@ -13,10 +13,11 @@ class GoogleAuthController extends Controller
 {
     public function redirectToGoogle(Request $request)
     {
-        if ($request->has('role')) {
-            session(['google_preferred_role' => $request->role]);
-        }
-        return Socialite::driver('google')->redirect();
+        $role = $request->query('role', 'donor');
+
+        return Socialite::driver('google')
+            ->with(['state' => 'role=' . $role])
+            ->redirect();
     }
 
     public function handleGoogleCallback()
@@ -25,34 +26,30 @@ class GoogleAuthController extends Controller
             $googleUser = Socialite::driver('google')->user();
             
             // Find existing user
+            $state = $request->input('state');
+            parse_str($state, $result);
+            $role = $result['role'] ?? 'donor';
+
             $user = User::where('email', $googleUser->email)->first();
 
             if ($user) {
-                // Existing user: Just log them in
                 Auth::login($user);
             } else {
-                // NEW USER: Get the role we saved in the session
-                // Default to 'donor' if for some reason the session is empty
-                $role = session('google_preferred_role', 'donor');
-
                 $newUser = User::create([
                     'name' => $googleUser->name,
                     'email' => $googleUser->email,
                     'google_id' => $googleUser->id,
                     'password' => Hash::make(Str::random(16)),
-                    'role' => $role, // <--- This is the key fix!
+                    'role' => $role, // Now this will be 'charity' if they picked it!
                 ]);
 
                 Auth::login($newUser);
-                
-                // Clean up the session
-                session()->forget('google_preferred_role');
             }
 
             return redirect()->intended('dashboard');
 
         } catch (\Exception $e) {
-            return redirect('/login')->with('error', 'Something went wrong with Google sign-in.');
+            return redirect('/login')->with('error', 'Google authentication failed.');
         }
     }
 }
