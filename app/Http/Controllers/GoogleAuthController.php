@@ -15,41 +15,55 @@ class GoogleAuthController extends Controller
     {
         $role = $request->query('role', 'donor');
 
-        return Socialite::driver('google')
-            ->with(['state' => 'role=' . $role])
-            ->redirect();
+        // Store role in session — survives the OAuth redirect reliably
+        session(['google_role' => $role]);
+
+        // stateless() avoids state mismatch exceptions
+        return Socialite::driver('google')->stateless()->redirect();
     }
 
-    public function handleGoogleCallback()
+    public function handleGoogleCallback(Request $request)
     {
         try {
-            $googleUser = Socialite::driver('google')->user();
-            
-            // Find existing user
-            $state = $request->input('state');
-            parse_str($state, $result);
-            $role = $result['role'] ?? 'donor';
+            // stateless() must match what we used in redirect
+            $googleUser = Socialite::driver('google')->stateless()->user();
 
-            $user = User::where('email', $googleUser->email)->first();
+            // Read role from session (set before redirect)
+            $role = session('google_role', 'donor');
+
+            $user = User::where('email', $googleUser->email)
+                        ->orWhere('google_id', $googleUser->id)
+                        ->first();
 
             if ($user) {
-                Auth::login($user);
-            } else {
-                $newUser = User::create([
-                    'name' => $googleUser->name,
-                    'email' => $googleUser->email,
-                    'google_id' => $googleUser->id,
-                    'password' => Hash::make(Str::random(16)),
-                    'role' => $role, // Now this will be 'charity' if they picked it!
+                // Existing user — just update google_id if missing
+                $user->update([
+                    'google_id'          => $googleUser->id,
+                    'email_verified_at'  => $user->email_verified_at ?? now(),
                 ]);
-
-                Auth::login($newUser);
+            } else {
+                // New user — create with selected role
+                $user = User::create([
+                    'name'               => $googleUser->name,
+                    'email'              => $googleUser->email,
+                    'google_id'          => $googleUser->id,
+                    'password'           => Hash::make(Str::random(16)),
+                    'role'               => $role,
+                    'email_verified_at'  => now(), // Google already verified the email
+                    'verification_status' => $role === 'charity' ? 'pending' : 'approved',
+                ]);
             }
 
-            return redirect()->intended('dashboard');
+            Auth::login($user, true);
+            $request->session()->regenerate();
+
+            // Clear the role from session after use
+            session()->forget('google_role');
+
+            return redirect()->route('dashboard');
 
         } catch (\Exception $e) {
-            return redirect('/login')->with('error', 'Google authentication failed.');
+            return redirect('/login')->with('error', 'Google login failed: ' . $e->getMessage());
         }
     }
 }
