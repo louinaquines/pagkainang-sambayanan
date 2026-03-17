@@ -115,8 +115,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/charities/{id}/reject', [AdminController::class, 'rejectCharity'])->name('admin.charities.reject');
     });
 });
-    Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle']);
-    Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
+    // Google OAuth — no auth middleware, but needs session
+    Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle'])->name('auth.google');
+    Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback'])->name('auth.google.callback');
 
 require __DIR__ . '/auth.php';
 
