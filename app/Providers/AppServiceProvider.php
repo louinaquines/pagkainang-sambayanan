@@ -7,31 +7,34 @@ use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
+use Illuminate\Http\Request;
 
 class AppServiceProvider extends ServiceProvider
 {
-    /**
-     * Register any application services.
-     */
-    
     public function register(): void
     {
         //
     }
 
-    /**
-     * Bootstrap any application services.
-     */
     public function boot(): void
     {
+        // Trust Railway's proxy so HTTPS is detected correctly
+        Request::setTrustedProxies(
+            ['127.0.0.1', '10.0.0.0/8', '172.16.0.0/12', '192.168.0.0/16'],
+            Request::HEADER_X_FORWARDED_FOR |
+            Request::HEADER_X_FORWARDED_HOST |
+            Request::HEADER_X_FORWARDED_PORT |
+            Request::HEADER_X_FORWARDED_PROTO
+        );
+
         if (config('app.env') === 'production') {
             URL::forceScheme('https');
         }
-        
+
         View::composer('*', function ($view) {
             try {
-                $settings = DB::getSchemaBuilder()->hasTable('settings') 
-                    ? Setting::first() 
+                $settings = DB::getSchemaBuilder()->hasTable('settings')
+                    ? Setting::first()
                     : null;
             } catch (\Exception $e) {
                 $settings = null;
