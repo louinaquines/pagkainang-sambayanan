@@ -404,7 +404,7 @@
                     <span style="background: white; padding: 0 15px; color: #999; font-size: 12px; position: relative;">OR REGISTER WITH</span>
                 </div>
 
-                <a id="google-reg-btn" href="{{ url('auth/google') }}" class="btn-auth" 
+                <a id="google-reg-btn" href="#" onclick="handleGoogleRegister(event)" class="btn-auth"
                    style="background: white; border: 1px solid #ddd; color: #444; display: flex; align-items: center; justify-content: center; gap: 10px; margin-top: 10px; text-decoration: none;">
                     <svg width="18" height="18" viewBox="0 0 24 24">
                         <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"/>
@@ -590,6 +590,16 @@
     @elseif($errors->any() && old('_form') === 'register')
         openModal('registerModal');
     @endif
+
+    function handleGoogleRegister(e) {
+        e.preventDefault();
+        const role = document.querySelector('#registerModal select[name="role"]').value;
+        if (!role) {
+            alert('Please select a role (Donor or Charity) before continuing with Google.');
+            return;
+        }
+        window.location.href = '{{ url("auth/google") }}?role=' + role;
+    }
 </script>
 </body>
 </html>
