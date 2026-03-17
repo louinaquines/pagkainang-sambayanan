@@ -114,10 +114,9 @@ Route::middleware('auth')->group(function () {
         Route::post('/admin/charities/{id}/approve', [AdminController::class, 'approveCharity'])->name('admin.charities.approve');
         Route::post('/admin/charities/{id}/reject', [AdminController::class, 'rejectCharity'])->name('admin.charities.reject');
     });
+});
     Route::get('auth/google', [GoogleAuthController::class, 'redirectToGoogle']);
     Route::get('auth/google/callback', [GoogleAuthController::class, 'handleGoogleCallback']);
-
-});
 
 require __DIR__ . '/auth.php';
 
@@ -128,3 +127,10 @@ Route::get('/logout', function () {
     request()->session()->regenerateToken();
     return redirect('/');
 })->name('logout.get');
+
+Route::get('/clear-site', function() {
+    \Illuminate\Support\Facades\Artisan::call('view:clear');
+    \Illuminate\Support\Facades\Artisan::call('cache:clear');
+    \Illuminate\Support\Facades\Artisan::call('config:clear');
+    return "Site cache cleared! Go check the login page.";
+});
