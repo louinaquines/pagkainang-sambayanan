@@ -281,11 +281,30 @@
     </style>
 </head>
 <body>
-    
+
     @if(session('error'))
-    <div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#B02818;color:white;padding:14px 20px;text-align:center;font-size:13px;font-weight:600;">
-        {{ session('error') }}
+    <div id="flash-toast" style="position:fixed;bottom:32px;right:32px;z-index:9999;background:#B02818;color:white;padding:16px 22px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 32px rgba(176,40,24,0.4);display:flex;align-items:center;gap:12px;max-width:380px;animation:toastSlide 0.4s ease both;">
+        <svg width="18" height="18" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span>{{ session('error') }}</span>
+        <button onclick="document.getElementById('flash-toast').remove()" style="background:none;border:none;color:white;cursor:pointer;margin-left:8px;opacity:0.7;font-size:16px;line-height:1;">&times;</button>
     </div>
+    <style>
+        @keyframes toastSlide { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:translateY(0); } }
+    </style>
+    <script>
+        setTimeout(() => { const t = document.getElementById('flash-toast'); if(t) t.style.opacity = '0'; setTimeout(() => { if(t) t.remove(); }, 400); }, 4000);
+    </script>
+    @endif
+
+    @if(session('success'))
+    <div id="flash-toast-success" style="position:fixed;bottom:32px;right:32px;z-index:9999;background:#1A7A40;color:white;padding:16px 22px;border-radius:12px;font-size:13px;font-weight:600;box-shadow:0 8px 32px rgba(26,122,64,0.4);display:flex;align-items:center;gap:12px;max-width:380px;animation:toastSlide 0.4s ease both;">
+        <svg width="18" height="18" fill="none" stroke="white" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+        <span>{{ session('success') }}</span>
+        <button onclick="document.getElementById('flash-toast-success').remove()" style="background:none;border:none;color:white;cursor:pointer;margin-left:8px;opacity:0.7;font-size:16px;line-height:1;">&times;</button>
+    </div>
+    <script>
+        setTimeout(() => { const t = document.getElementById('flash-toast-success'); if(t) t.style.opacity = '0'; setTimeout(() => { if(t) t.remove(); }, 400); }, 4000);
+    </script>
     @endif
 
 {{-- LOGIN MODAL --}}
