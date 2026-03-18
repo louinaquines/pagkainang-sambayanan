@@ -281,6 +281,12 @@
     </style>
 </head>
 <body>
+    
+    @if(session('error'))
+    <div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#B02818;color:white;padding:14px 20px;text-align:center;font-size:13px;font-weight:600;">
+        {{ session('error') }}
+    </div>
+    @endif
 
 {{-- LOGIN MODAL --}}
 <div class="modal-overlay" id="loginModal">
