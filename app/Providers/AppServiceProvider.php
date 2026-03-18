@@ -2,7 +2,6 @@
 
 namespace App\Providers;
 
-use App\Models\Setting;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\DB;
@@ -33,14 +32,15 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) {
             try {
-                $settings = DB::getSchemaBuilder()->hasTable('settings')
-                    ? Setting::first()
-                    : null;
+                $emergencyMode = DB::table('settings')
+                    ->where('key', 'emergency_mode')
+                    ->value('value');
+                $emergencyModeActive = $emergencyMode === '1' || $emergencyMode === 'true';
             } catch (\Exception $e) {
-                $settings = null;
+                $emergencyModeActive = false;
             }
 
-            $view->with('emergencyModeActive', $settings?->emergency_mode ?? false);
+            $view->with('emergencyModeActive', $emergencyModeActive);
         });
     }
 }

@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('donation_id')->constrained()->onDelete('cascade');
             $table->foreignId('charity_id')->constrained('users')->onDelete('cascade');
-            $table->enum('status', ['pending', 'accepted', 'rejected'])->default('pending');
+            $table->string('status')->default('pending'); // pending, accepted, rejected
             $table->timestamps();
 
             $table->unique(['donation_id', 'charity_id']); // one request per charity per donation
