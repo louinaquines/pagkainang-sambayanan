@@ -50,7 +50,7 @@ class GoogleAuthController extends Controller
                     'password'           => Hash::make(Str::random(16)),
                     'role'               => $role,
                     'email_verified_at'  => now(), // Google already verified the email
-                    'verification_status' => $role === 'charity' ? 'pending' : 'approved',
+                    'verification_status' => 'unsubmitted',
                 ]);
             }
 

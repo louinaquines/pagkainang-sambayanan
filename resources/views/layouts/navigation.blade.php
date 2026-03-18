@@ -34,7 +34,7 @@
                 </a>
 
             @elseif(auth()->user()->role === 'charity')
-                @if(!auth()->user()->organization_name)
+                @if(!auth()->user()->organization_name || auth()->user()->verification_status === 'unsubmitted')
                     <a href="{{ route('charity.register') }}" class="nav-link nav-admin {{ request()->routeIs('charity.register') ? 'active' : '' }}">Register Organization</a>
 
                 @elseif(auth()->user()->verification_status === 'pending')
