@@ -76,7 +76,7 @@
                         <svg :style="adminOpen ? 'transform:rotate(180deg)' : ''" style="transition:transform 0.2s;" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/>
                         </svg>
-                        @php $adminPending = \App\Models\User::where('role','charity')->where('verification_status','pending')->count(); @endphp
+                        @php $adminPending = \App\Models\User::where('role','charity')->where('verification_status','pending')->whereNotNull('organization_name')->where('organization_name','!=','')->count(); @endphp
                         @if($adminPending > 0)
                             <span style="width:16px;height:16px;background:var(--red);border-radius:50%;font-size:9px;font-weight:700;color:white;display:inline-flex;align-items:center;justify-content:center;margin-left:2px;">{{ $adminPending }}</span>
                         @endif

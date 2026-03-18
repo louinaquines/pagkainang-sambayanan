@@ -5,9 +5,9 @@
         $totalDonations  = \App\Models\Donation::withTrashed()->count();
         $availableCount  = \App\Models\Donation::withTrashed()->where('status','available')->count();
         $completedCount  = \App\Models\Donation::withTrashed()->whereNotNull('claimed_by')->count();
-        $totalCharities  = \App\Models\User::where('role','charity')->count();
-        $pendingCount    = \App\Models\User::where('role','charity')->where('verification_status','pending')->count();
-        $approvedCount   = \App\Models\User::where('role','charity')->where('verification_status','approved')->count();
+        $totalCharities  = \App\Models\User::where('role','charity')->whereNotNull('organization_name')->where('organization_name','!=','')->count();
+        $pendingCount    = \App\Models\User::where('role','charity')->where('verification_status','pending')->whereNotNull('organization_name')->where('organization_name','!=','')->count();
+        $approvedCount   = \App\Models\User::where('role','charity')->where('verification_status','approved')->whereNotNull('organization_name')->where('organization_name','!=','')->count();
         $totalDonors     = \App\Models\User::where('role','donor')->count();
         $totalFeedbacks  = \App\Models\Feedback::count();
         $emergencyMode   = \DB::table('settings')->where('key','emergency_mode')->value('value') ?? '0';
