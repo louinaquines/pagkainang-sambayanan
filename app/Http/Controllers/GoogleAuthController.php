@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Cookie;
+use Illuminate\Support\Facades\Cache;
 
 class GoogleAuthController extends Controller
 {
@@ -16,14 +16,17 @@ class GoogleAuthController extends Controller
     {
         $role = $request->query('role', 'donor');
 
-        // Store role in a cookie — survives the OAuth redirect on Railway
-        // (Railway drops PHP sessions between requests on different instances)
-        $cookie = Cookie::make('google_oauth_role', $role, 10); // 10 minutes
+        // Generate a unique token to store the role
+        $token = Str::random(40);
 
+        // Store role in cache for 10 minutes using the token as key
+        Cache::put('google_oauth_role_' . $token, $role, now()->addMinutes(10));
+
+        // Pass token through Google's state parameter
         return Socialite::driver('google')
             ->stateless()
-            ->redirect()
-            ->withCookie($cookie);
+            ->with(['state' => $token])
+            ->redirect();
     }
 
     public function handleGoogleCallback(Request $request)
@@ -31,8 +34,9 @@ class GoogleAuthController extends Controller
         try {
             $googleUser = Socialite::driver('google')->stateless()->user();
 
-            // Read role from cookie
-            $role = $request->cookie('google_oauth_role', 'donor');
+            // Retrieve role from cache using the token in state
+            $token = $request->input('state');
+            $role = Cache::pull('google_oauth_role_' . $token, 'donor');
 
             // Validate role
             if (!in_array($role, ['donor', 'charity'])) {
@@ -64,9 +68,6 @@ class GoogleAuthController extends Controller
 
             Auth::login($user, true);
             $request->session()->regenerate();
-
-            // Clear the cookie
-            Cookie::queue(Cookie::forget('google_oauth_role'));
 
             return redirect()->route('dashboard');
 
