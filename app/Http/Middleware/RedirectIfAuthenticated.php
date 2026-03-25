@@ -17,7 +17,7 @@ class RedirectIfAuthenticated
             if (Auth::guard($guard)->check()) {
                 $user = Auth::guard($guard)->user();
 
-                // Force unregistered charities to fill in their application
+                // Charity without organization — force to registration form
                 if ($user->role === 'charity' && empty($user->organization_name)) {
                     return redirect()->route('charity.register');
                 }

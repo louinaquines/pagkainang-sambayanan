@@ -34,14 +34,14 @@ class AuthenticatedSessionController extends Controller
         $role = ucfirst($user->role);
 
         // Redirect charity users to complete their application if organization_name is NULL
-        if ($user->role === 'charity' && is_null($user->organization_name)) {
+        if ($user->role === 'charity' && empty($user->organization_name)) {
             return redirect()->route('charity.register')
-                ->with('warning', 'Please complete your charity application to continue.');
+                ->with('login_success', "Welcome back, {$name}! Please complete your organization registration.");
         }
 
         return redirect()->intended(route('dashboard', absolute: false))
-            ->with('login_success', "Welcome back, {$name}! You are logged in as {$role}.");;
-        }
+            ->with('login_success', "Welcome back, {$name}! You are logged in as {$role}.");
+    }
 
     /**
      * Destroy an authenticated session.

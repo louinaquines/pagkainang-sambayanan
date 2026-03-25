@@ -80,8 +80,13 @@ class GoogleAuthController extends Controller
             Auth::login($user, true);
             $request->session()->regenerate();
 
+            // Role-based redirect after Google login
             if ($user->role === 'charity' && empty($user->organization_name)) {
                 return redirect()->route('charity.register');
+            }
+
+            if ($user->role === 'donor') {
+                return redirect()->route('dashboard');
             }
 
             return redirect()->route('dashboard');
