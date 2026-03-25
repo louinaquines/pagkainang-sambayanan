@@ -564,20 +564,32 @@ document.addEventListener('DOMContentLoaded',function(){
     @if(session('error'))            showToast('error','Error',"{{ addslashes(session('error')) }}"); @endif
 
     // Mobile nav toggle
-    var toggle = document.getElementById('nav-toggle');
-    var links  = document.querySelector('.nav-links');
-    if(toggle && links){
-        toggle.addEventListener('click', function(){
-            toggle.classList.toggle('is-open');
-            links.classList.toggle('nav-open');
-        });
-        document.addEventListener('click', function(e){
-            if(!toggle.contains(e.target) && !links.contains(e.target)){
-                toggle.classList.remove('is-open');
-                links.classList.remove('nav-open');
-            }
-        });
-    }
+    // Mobile nav toggle
+    document.addEventListener('DOMContentLoaded', function(){
+        var toggle = document.getElementById('nav-toggle');
+        var links  = document.getElementById('nav-links');
+        
+        if(toggle && links){
+            toggle.addEventListener('click', function(e){
+                e.stopPropagation();
+                toggle.classList.toggle('is-open');
+                links.classList.toggle('nav-open');
+            });
+            document.addEventListener('click', function(e){
+                if(!toggle.contains(e.target) && !links.contains(e.target)){
+                    toggle.classList.remove('is-open');
+                    links.classList.remove('nav-open');
+                }
+            });
+            // Close nav when a link is clicked
+            links.querySelectorAll('a').forEach(function(link){
+                link.addEventListener('click', function(){
+                    toggle.classList.remove('is-open');
+                    links.classList.remove('nav-open');
+                });
+            });
+        }
+    });
 });
 </script>
 </body>
