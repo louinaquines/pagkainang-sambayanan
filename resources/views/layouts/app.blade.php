@@ -225,6 +225,27 @@
         }
         .don-card-body { padding: 18px 24px 22px; }
 
+        /* Don Card Responsive */
+        @media (max-width: 768px) {
+            .don-card { border-radius: 12px; }
+            .don-card-header { padding: 16px 18px; }
+            .don-card-header > div:first-child { gap: 8px !important; }
+            .don-card-header > div:first-child > div:first-child { width: 40px !important; height: 40px !important; }
+            .don-card-header > div:first-child > div:first-child svg { width: 18px !important; height: 18px !important; }
+            .don-card-header h3 { font-size: 18px !important; margin-top: 12px !important; }
+            .don-card-body { padding: 14px 18px 18px; }
+            .don-card-body > div:first-child { gap: 6px !important; margin-bottom: 16px !important; }
+            .don-card-body > div:first-child > div { font-size: 12px !important; }
+            .don-card-body svg { width: 12px !important; height: 12px !important; }
+        }
+        @media (max-width: 480px) {
+            .don-card { border-radius: 10px; }
+            .don-card-header { padding: 14px 14px; }
+            .don-card-header > div:first-child > div:first-child { width: 36px !important; height: 36px !important; }
+            .don-card-header h3 { font-size: 16px !important; }
+            .don-card-body { padding: 12px 14px 14px; }
+        }
+
         .stat-card {
             background: var(--white); border-radius: 16px; padding: 32px 24px; text-align: center;
             border: 1px solid rgba(196,144,16,0.1);

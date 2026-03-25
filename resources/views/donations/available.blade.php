@@ -9,7 +9,7 @@
             <div class="section-label">Browse</div>
             <h2 style="font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:var(--dark);line-height:1.1;">Available Food Donations</h2>
         </div>
-        <div style="display:flex;align-items:center;gap:12px;">
+        <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
             <div style="background:var(--white);border:1px solid rgba(196,144,16,0.15);border-radius:12px;padding:12px 20px;text-align:center;min-width:100px;">
                 <div style="font-family:'Cormorant Garamond',serif;font-size:28px;font-weight:700;color:var(--red);line-height:1;">{{ $donations->count() }}</div>
                 <div style="font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-top:4px;font-weight:600;">Available</div>
