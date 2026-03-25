@@ -564,7 +564,7 @@ document.addEventListener('DOMContentLoaded',function(){
     @if(session('error'))            showToast('error','Error',"{{ addslashes(session('error')) }}"); @endif
 
     // Mobile nav toggle
-    var toggle = document.getElementById('nav-mobile-toggle');
+    var toggle = document.getElementById('nav-toggle');
     var links  = document.querySelector('.nav-links');
     if(toggle && links){
         toggle.addEventListener('click', function(){
