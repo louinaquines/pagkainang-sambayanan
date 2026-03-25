@@ -428,6 +428,10 @@
             /* Hide user name on small screens, show only avatar */
             .nav-user-name { display: none; }
             .nav-user-btn { padding: 4px 8px 4px 4px; }
+            .profile-sidebar {
+                position: static !important;
+                top: auto !important;
+            }
         }
 
         /* Small phones: below 480px */

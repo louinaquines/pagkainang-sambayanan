@@ -14,8 +14,7 @@
     <div class="profile-grid" style="display:grid;grid-template-columns:280px 1fr;gap:32px;align-items:start;">
 
         {{-- SIDEBAR --}}
-        <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:100px;">
-            {{-- Avatar card --}}
+        <div style="display:flex;flex-direction:column;gap:16px;position:sticky;top:100px;" class="profile-sidebar">            {{-- Avatar card --}}
             <div class="card" style="padding:28px;text-align:center;">
                 <div style="width:72px;height:72px;background:linear-gradient(135deg,var(--red),var(--red2));border-radius:20px;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;font-family:'Cormorant Garamond',serif;font-size:32px;font-weight:700;color:white;box-shadow:0 8px 24px rgba(176,40,24,0.3);">
                     {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
