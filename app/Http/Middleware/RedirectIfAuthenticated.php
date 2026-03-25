@@ -15,8 +15,13 @@ class RedirectIfAuthenticated
 
         foreach ($guards as $guard) {
             if (Auth::guard($guard)->check()) {
-                // If already logged in and trying to access guest pages,
-                // redirect to dashboard
+                $user = Auth::guard($guard)->user();
+
+                // Force unregistered charities to fill in their application
+                if ($user->role === 'charity' && empty($user->organization_name)) {
+                    return redirect()->route('charity.register');
+                }
+
                 return redirect()->route('dashboard');
             }
         }
