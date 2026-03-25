@@ -6,7 +6,7 @@ use Closure;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 
-class EnsureCharityIsRegistered extends Middleware
+class EnsureCharityIsRegistered
 {
     public function handle(Request $request, Closure $next): Response
     {
@@ -22,7 +22,7 @@ class EnsureCharityIsRegistered extends Middleware
             !$request->routeIs('logout*')
         ) {
             return redirect()->route('charity.register')
-                ->with('info', 'Please complete your organization registration first.');
+                ->with('info', 'Please complete your organization registration to continue.');
         }
 
         return $next($request);
