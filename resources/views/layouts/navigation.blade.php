@@ -1,4 +1,4 @@
-<nav class="main-nav" x-data="{ open: false }">
+<nav class="main-nav">
     <div class="nav-inner">
 
         {{-- Logo --}}
