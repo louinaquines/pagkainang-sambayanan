@@ -372,116 +372,119 @@
            RESPONSIVE BREAKPOINTS
         ════════════════════════════════════════ */
 
-        /* Tablet: 768–1024px */
         @media (max-width: 1024px) {
             main { padding: 36px 28px 80px; }
             .nav-inner { padding: 0 28px; }
             .page-title-inner { padding: 18px 28px; }
             .page-title-bar h2 { font-size: 24px; }
-            
-            /* Stat cards - 2 columns */
             .stat-card { padding: 24px 16px; }
             .stat-num { font-size: 40px; }
-            
-            /* Grid adjustments */
             .footer-top { grid-template-columns: 1fr 1fr; gap: 32px; padding: 40px 28px 28px; }
         }
 
-        /* Mobile: below 768px */
         @media (max-width: 768px) {
             main { padding: 20px 14px 60px; }
-            .nav-inner { padding: 0 14px; height: 58px; }
-            .nav-menu-toggle { display: inline-flex; }
 
+            /* Nav */
+            .nav-inner { padding: 0 14px; height: 58px; }
+            .nav-menu-toggle { display: inline-flex !important; }
+            .nav-user-name { display: none; }
+            .nav-user-btn { padding: 4px 8px 4px 4px; }
+
+            /* Nav links — hidden by default, shown when toggled */
             .nav-links {
-                display: none !important;
+                display: none;
                 position: fixed;
-                top: 58px; left: 0; right: 0;
+                top: 58px;
+                left: 0;
+                right: 0;
+                bottom: 0;
                 background: var(--white);
                 flex-direction: column;
                 align-items: flex-start;
                 gap: 0;
-                padding: 10px 0 16px;
+                padding: 8px 0 24px;
                 box-shadow: 0 14px 36px rgba(22,8,0,0.15);
-                z-index: 300;
-                margin-left: 0;
-                border-bottom: 2px solid rgba(196,144,16,0.15);
+                z-index: 299;
+                overflow-y: auto;
+                border-top: 2px solid rgba(196,144,16,0.15);
             }
-
             .nav-links.nav-open {
-                display: flex !important;
+                display: flex;
             }
-
             .nav-link {
                 width: 100%;
-                padding: 13px 20px;
-                font-size: 14px;
+                padding: 14px 20px;
+                font-size: 15px;
                 border-radius: 0;
-                border-bottom: 1px solid rgba(196,144,16,0.06);
+                border-bottom: 1px solid rgba(196,144,16,0.07);
             }
-
             .nav-link::after { display: none; }
-            .nav-link:hover { background: rgba(196,144,16,0.06); color: var(--red); }
-
-            .nav-admin-wrap { width: 100%; }
-
-            /* Hide user name on small screens, show only avatar */
-            .nav-user-name { display: none; }
-            .nav-user-btn { padding: 4px 8px 4px 4px; }
-            .profile-sidebar {
-                position: static !important;
-                top: auto !important;
+            .nav-link.active {
+                background: rgba(176,40,24,0.05);
+                border-left: 3px solid var(--red);
+                padding-left: 17px;
             }
+            .nav-admin-wrap { width: 100%; }
+            .nav-admin-wrap button.nav-link { width: 100%; }
+
+            /* Page title */
+            .page-title-inner { padding: 14px; flex-wrap: wrap; }
+            .page-title-bar h2 { font-size: 20px; }
+            .page-title-line { display: none; }
+
+            /* Top bar */
+            .top-bar { padding: 7px 14px; flex-wrap: wrap; gap: 4px; }
+            .top-bar-text:first-child { display: none; }
+
+            /* Stat cards */
+            .stat-card { padding: 20px 14px; }
+            .stat-num { font-size: 36px; }
+
+            /* Tables */
+            .ps-table-wrap { overflow-x: auto; -webkit-overflow-scrolling: touch; }
+            .ps-table { min-width: 500px; }
+            .ps-table thead th, .ps-table tbody td { padding: 10px 12px; font-size: 12px; }
+
+            /* Cards */
+            .card:hover { transform: none; }
+
+            /* Footer */
+            .footer-top { grid-template-columns: 1fr; padding: 28px 14px 20px; gap: 20px; }
+            .footer-bottom { padding: 14px; flex-direction: column; gap: 6px; align-items: flex-start; }
+
+            /* Toast */
+            #toast-container { top: 10px; right: 10px; left: 10px; }
+            .ps-toast { min-width: unset; max-width: 100%; }
+
+            /* Profile sidebar */
+            .profile-sidebar { position: static !important; top: auto !important; }
+
+            /* Grids — force single column */
+            [style*="grid-template-columns: repeat(4"] { grid-template-columns: repeat(2,1fr) !important; }
+            [style*="grid-template-columns: repeat(3"] { grid-template-columns: 1fr !important; }
+            [style*="grid-template-columns: 1fr 1fr"]  { grid-template-columns: 1fr !important; }
         }
 
-        /* Small phones: below 480px */
         @media (max-width: 480px) {
             main { padding: 16px 12px 50px; }
-            
             .page-title-bar h2 { font-size: 18px; }
             .page-title-inner { padding: 12px; }
-            
-            /* Stat cards */
             .stat-card { padding: 16px 12px; }
             .stat-num { font-size: 28px; }
             .stat-lbl { font-size: 8px; letter-spacing: 1px; }
-            
-            /* Buttons - full width on small screens */
-            .btn { width: 100%; justify-content: center; padding: 12px 16px; }
-            .btn + .btn { margin-top: 8px; }
-            
-            /* Forms */
-            .form-input { padding: 10px 12px; font-size: 12px; }
-            .form-label { font-size: 10px; }
-            
-            /* Tables */
-            .ps-table { min-width: 420px; }
-            .ps-table thead th, .ps-table tbody td { padding: 8px 10px; font-size: 11px; }
-            
-            /* Badges */
+            .form-input { padding: 10px 12px; font-size: 13px; }
             .badge { padding: 3px 8px; font-size: 10px; }
-            
-            /* Alerts */
             .alert { padding: 12px 14px; font-size: 13px; }
-            
-            /* Nav */
-            .nav-logo-icon { width: 36px; height: 36px; }
-            .nav-logo-main { font-size: 16px; }
-            .nav-logo-sub { font-size: 7px; }
-            .nav-user-btn { padding: 4px 12px 4px 4px; }
             .nav-avatar { width: 28px; height: 28px; font-size: 11px; }
-            .nav-user-name { font-size: 12px; }
-            
-            /* Hero section adjustments */
             .emergency-banner { padding: 8px 12px; font-size: 10px; }
+            [style*="grid-template-columns: repeat(4"] { grid-template-columns: 1fr !important; }
         }
 
-        /* Extra small: below 360px */
         @media (max-width: 360px) {
             main { padding: 14px 10px 45px; }
             .page-title-bar h2 { font-size: 16px; }
             .stat-num { font-size: 24px; }
-            .btn { padding: 10px 14px; font-size: 10px; }
         }
     </style>
 </head>
