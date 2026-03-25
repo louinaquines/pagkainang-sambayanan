@@ -18,6 +18,14 @@ Route::get('/', function () {
 })->name('welcome');
 
 Route::get('/dashboard', function () {
+    $user = auth()->user();
+    
+    // Redirect charity users to complete their application if organization_name is NULL
+    if ($user && $user->role === 'charity' && is_null($user->organization_name)) {
+        return redirect()->route('charity.register')
+            ->with('warning', 'Please complete your charity application to continue.');
+    }
+    
     $emergencyMode = DB::table('settings')
         ->where('key', 'emergency_mode')
         ->value('value');

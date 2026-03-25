@@ -35,6 +35,18 @@ class CharityController extends Controller
             'verification_status'      => 'pending',
         ]);
 
+        // Notify admin when charity submits application for review
+        $admin = \App\Models\User::where('role', 'admin')->first();
+        if ($admin) {
+            \App\Models\Notification::create([
+                'user_id'    => $admin->id,
+                'type'       => 'charity_application',
+                'message'    => auth()->user()->name . ' has submitted a charity application for review.',
+                'related_id' => auth()->id(),
+                'is_read'    => false,
+            ]);
+        }
+
         return redirect()->route('dashboard')
             ->with('success', 'Your charity registration has been submitted for review.');
     }

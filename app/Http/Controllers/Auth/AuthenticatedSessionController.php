@@ -29,8 +29,15 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        $name = auth()->user()->name;
-        $role = ucfirst(auth()->user()->role);
+        $user = auth()->user();
+        $name = $user->name;
+        $role = ucfirst($user->role);
+
+        // Redirect charity users to complete their application if organization_name is NULL
+        if ($user->role === 'charity' && is_null($user->organization_name)) {
+            return redirect()->route('charity.register')
+                ->with('warning', 'Please complete your charity application to continue.');
+        }
 
         return redirect()->intended(route('dashboard', absolute: false))
             ->with('login_success', "Welcome back, {$name}! You are logged in as {$role}.");;
