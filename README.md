@@ -20,6 +20,7 @@ This project directly contributes to the United Nations' 2030 Agenda:
 🛠 Tech Stack
 
 This project utilizes a modern Full-Stack architecture focused on scalability, security, and rapid deployment.
+
     Category                   Technology                           Purpose
     
     Backend                    Laravel 11 (PHP 8.x)                 Core application logic, routing, and API management.
