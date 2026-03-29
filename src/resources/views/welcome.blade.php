@@ -626,5 +626,22 @@
         window.location.href = '{{ url("auth/google") }}?role=' + role + '&intent=register';
     }
 </script>
+
+@if(session('registered'))
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        Swal.fire({
+            icon:'success',
+            title:'Registration Successful!',
+            text:'Your account has been created. Please log in.',
+            confirmButtonColor:'#B02818',
+            confirmButtonText:'Log In Now',
+        }).then((result) => {
+            openModal('loginModal');
+        });
+    });
+</script>
+@endif
 </body>
 </html>

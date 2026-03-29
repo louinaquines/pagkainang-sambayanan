@@ -45,6 +45,6 @@ class RegisteredUserController extends Controller
 
         event(new Registered($user));
 
-        return redirect()->route('login')->with('registered', 'Account created successfully! Please log in.');
+        return redirect('/')->with('registered', 'Account created successfully! Please log in.');
     }
 }
