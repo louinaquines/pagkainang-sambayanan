@@ -84,7 +84,7 @@
                 {{-- Photo --}}
                 @if($fb->photo_path)
                 <div style="height:200px;overflow:hidden;background:var(--light);">
-                    <img src="{{ route('files', $fb->photo_path) }}"
+                    <img src="{{ route('serve', $fb->photo_path) }}"
                          alt="Feedback photo"
                          style="width:100%;height:100%;object-fit:cover;transition:transform 0.4s ease;"
                          onmouseover="this.style.transform='scale(1.04)'"

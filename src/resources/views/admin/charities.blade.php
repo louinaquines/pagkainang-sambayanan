@@ -134,7 +134,7 @@
                                 </div>
                             </div>
                             @if($charity->legitimacy_document)
-                                <a href="{{ route('admin.storage', $charity->legitimacy_document) }}"
+                                <a href="{{ route('admin.serve', $charity->legitimacy_document) }}"
                                    target="_blank"
                                    class="btn btn-gold"
                                    style="padding:9px 20px;font-size:12px;">
