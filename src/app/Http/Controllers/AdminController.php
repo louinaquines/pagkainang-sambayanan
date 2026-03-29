@@ -262,10 +262,26 @@ class AdminController extends Controller
      */
     public function serveFile($path)
     {
-        $fullPath = storage_path('app/public/' . $path);
+        // Remove any leading slashes or "public/" prefixes that might be in the stored path
+        $cleanPath = ltrim($path, '/');
+        if (str_starts_with($cleanPath, 'public/')) {
+            $cleanPath = substr($cleanPath, 7);
+        }
+
+        $fullPath = storage_path('app/public/' . $cleanPath);
 
         if (!file_exists($fullPath)) {
-            abort(404, 'File not found.');
+            \Illuminate\Support\Facades\Log::error("File not found for admin view: " . $fullPath . " (Original path: " . $path . ")");
+            
+            // Check if it exists without the "legitimacy_documents/" prefix (fallback)
+            if (str_contains($cleanPath, '/')) {
+                $altPath = storage_path('app/public/' . basename($cleanPath));
+                if (file_exists($altPath)) {
+                    return response()->file($altPath);
+                }
+            }
+
+            abort(404, 'File not found. Please ensure the document exists in storage.');
         }
 
         return response()->file($fullPath);
