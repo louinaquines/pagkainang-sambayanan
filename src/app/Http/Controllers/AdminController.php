@@ -256,4 +256,18 @@ class AdminController extends Controller
 
         return redirect()->back()->with('success', 'Charity application rejected.');
     }
+
+    /**
+     * Serve files from storage with proper authorization
+     */
+    public function serveFile($path)
+    {
+        $fullPath = storage_path('app/public/' . $path);
+
+        if (!file_exists($fullPath)) {
+            abort(404, 'File not found.');
+        }
+
+        return response()->file($fullPath);
+    }
 }

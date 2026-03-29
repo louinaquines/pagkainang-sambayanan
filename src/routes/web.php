@@ -95,6 +95,7 @@ Route::middleware(['auth', 'charity.registered'])->group(function () {
     });
 
     Route::get('/notifications', [NotificationController::class, 'index'])->name('notifications.index');
+    Route::get('/files/{path}', [AdminController::class, 'serveFile'])->where('path', '.*')->name('files');
 
     Route::middleware('role:charity')->group(function () {
         Route::get('/charity/request/create', [CharityRequestController::class, 'create'])->name('charity.request.create');
@@ -121,6 +122,7 @@ Route::middleware(['auth', 'charity.registered'])->group(function () {
         Route::get('/admin/charities', [AdminController::class, 'charities'])->name('admin.charities');
         Route::post('/admin/charities/{id}/approve', [AdminController::class, 'approveCharity'])->name('admin.charities.approve');
         Route::post('/admin/charities/{id}/reject', [AdminController::class, 'rejectCharity'])->name('admin.charities.reject');
+        Route::get('/admin/storage/{path}', [AdminController::class, 'serveFile'])->where('path', '.*')->name('admin.storage');
     });
 });
     // Google OAuth — no auth middleware, but needs session
