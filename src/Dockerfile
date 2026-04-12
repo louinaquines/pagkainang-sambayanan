@@ -8,11 +8,15 @@ RUN apt-get update && apt-get install -y \
     zip \
     unzip \
     git \
+    curl \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
     && docker-php-ext-install gd pdo pdo_mysql
 
 # Enable Apache mod_rewrite for Laravel
 RUN a2enmod rewrite
+
+# Install Composer globally
+RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Set working directory
 WORKDIR /var/www/html
@@ -20,9 +24,8 @@ WORKDIR /var/www/html
 # Copy project files
 COPY . .
 
-# Install Composer
-RUN curl -sS https://getcomposer.com/installer | php -- --install-dir=/usr/local/bin --filename=composer
-RUN composer install --no-dev --optimize-autoloader
+# Now run composer with the full path just to be safe
+RUN /usr/local/bin/composer install --no-dev --optimize-autoloader --no-interaction
 
 # Set permissions for Laravel
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
